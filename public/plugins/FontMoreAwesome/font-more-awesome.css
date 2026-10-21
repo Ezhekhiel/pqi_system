@@ -1,0 +1,74 @@
+@font-face {
+    font-family: 'FontMoreAwesome';
+    src: url('../fonts/FontMoreAwesome.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.fa {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.fa-shoe_newbalance:before {
+    font-family: FontMoreAwesome;
+    content: "1";
+}
+
+.fa-newbalance_1:before {
+    font-family: FontMoreAwesome;
+    content: "A";
+}
+
+.fa-newbalance_2:before {
+    font-family: FontMoreAwesome;
+    content: "B";
+}
+
+.fa-pwi_1:before {
+    font-family: FontMoreAwesome;
+    content: "C";
+}
+
+.fa-pwi_2:before {
+    font-family: FontMoreAwesome;
+    content: "D";
+}
+
+.fa-reebok_1:before {
+    font-family: FontMoreAwesome;
+    content: "E";
+}
+
+.fa-reebok_2:before {
+    font-family: FontMoreAwesome;
+    content: "F";
+}
+
+.fa-reebok_3:before {
+    font-family: FontMoreAwesome;
+    content: "G";
+}
+
+.fa-reebok_4:before {
+    font-family: FontMoreAwesome;
+    content: "H";
+}
+
+.fa-adidas_1:before {
+    font-family: FontMoreAwesome;
+    content: "I";
+}
+
+.fa-adidas_2:before {
+    font-family: FontMoreAwesome;
+    content: "J";
+}
+.fa-si_completion:before {
+    font-family: FontMoreAwesome;
+    content: "K";
+}
