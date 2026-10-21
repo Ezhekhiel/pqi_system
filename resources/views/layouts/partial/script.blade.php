@@ -32,7 +32,7 @@
         }
     });
 </script>
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js" crossorigin="anonymous"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js" crossorigin="anonymous"></script>
 <script>
     new Sortable(document.querySelector('.connectedSortable'), {
         group: 'shared',
@@ -43,7 +43,7 @@
     cardHeaders.forEach((cardHeader) => {
         cardHeader.style.cursor = 'move';
     });
-</script>
+</script> -->
 
 <script>
     const bodyElement = document.body;

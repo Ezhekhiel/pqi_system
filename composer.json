@@ -58,7 +58,7 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ],
-        "dev": [
+         "dev": [
             "Composer\\Config::disableProcessTimeout",
             "npx concurrently --names=server,queue,reverb,schedule,vite -c green,yellow,magenta,yellow,blue \"php scripts/serve.php\" \"php artisan reverb:start\" \"npm run dev\""
         ]
