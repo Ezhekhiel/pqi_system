@@ -164,97 +164,97 @@ class PQIController extends Controller
 
         $cell = $get_cell->area_data->area;
         // query database
-        // $data = DB::connection('sqlsrv_erp')->select("
-        //         WITH DEFECT_DATA AS
-        //         (
-        //             SELECT
-        //                 A.GOOD_TYPE,
-        //                 A.PROD_DATE,
-        //                 D.LINE_GRP5 AS LINE_GRP,
-        //                 D.LINE_NM,
-        //                 D.CAPA_HOUR AS LINE_CAPA_HOUR,
-        //                 C.ARTICLEDESC,
-        //                 B.ARTNO,
-        //                 B.O_NO + ' - ' + CONVERT(NVARCHAR(1), B.O_SEQ) AS O_NO,
-        //                 F.COM_DESC AS DFT_CATG,
-        //                 E.DFT_NM,
-        //                 CASE
-        //                     WHEN A.TIME_CD = 'A012' THEN 'A011'
-        //                     ELSE A.TIME_CD
-        //                 END AS TIME_CD,
-        //                 A.QTY,
-        //                 A.CREATE_DATE
-        //             FROM dbo.VIEW_MrpQipDftDefectPop AS A WITH (NOLOCK)
-        //             INNER JOIN SAL_ORDER_MST AS B WITH (NOLOCK)
-        //                 ON A.PWI_NO = B.PWI_NO
-        //             INNER JOIN MST_ARTICLE AS C WITH (NOLOCK)
-        //                 ON B.ARTNO = C.ARTNO
-        //             INNER JOIN MST_LINE AS D WITH (NOLOCK)
-        //                 ON A.LINE_CD = D.LINE_CD
-        //                 --AND D.LINE_GRP1 = '02'
-        //                 --AND D.LINE_GRP2 = '0002'
-        //             LEFT OUTER JOIN MST_QIP_DEFECT AS E WITH (NOLOCK)
-        //                 ON A.DFT_CATG = E.DFT_CATG
-        //                 AND A.DFT_CD = E.DFT_CD
-        //                 AND B.BUYER = E.BUYER
-        //                 AND A.FAC_CD = E.FAC_CD
-        //             LEFT OUTER JOIN MST_COMM_DET AS F WITH (NOLOCK)
-        //                 ON F.COM_CD = 'DFT_CATG'
-        //                 AND A.DFT_CATG = F.COM_SEQ
-        //             WHERE A.FAC_CD = '51'
-        //             AND LINE_GRP5 = 'F-C'
-        //             AND LINE_NM = 'C-03'
-        //             --AND D.LINE_NM = ?
+        $data = DB::connection('sqlsrv_erp')->select("
+                WITH DEFECT_DATA AS
+                (
+                    SELECT
+                        A.GOOD_TYPE,
+                        A.PROD_DATE,
+                        D.LINE_GRP5 AS LINE_GRP,
+                        D.LINE_NM,
+                        D.CAPA_HOUR AS LINE_CAPA_HOUR,
+                        C.ARTICLEDESC,
+                        B.ARTNO,
+                        B.O_NO + ' - ' + CONVERT(NVARCHAR(1), B.O_SEQ) AS O_NO,
+                        F.COM_DESC AS DFT_CATG,
+                        E.DFT_NM,
+                        CASE
+                            WHEN A.TIME_CD = 'A012' THEN 'A011'
+                            ELSE A.TIME_CD
+                        END AS TIME_CD,
+                        A.QTY,
+                        A.CREATE_DATE
+                    FROM dbo.VIEW_MrpQipDftDefectPop AS A WITH (NOLOCK)
+                    INNER JOIN SAL_ORDER_MST AS B WITH (NOLOCK)
+                        ON A.PWI_NO = B.PWI_NO
+                    INNER JOIN MST_ARTICLE AS C WITH (NOLOCK)
+                        ON B.ARTNO = C.ARTNO
+                    INNER JOIN MST_LINE AS D WITH (NOLOCK)
+                        ON A.LINE_CD = D.LINE_CD
+                        --AND D.LINE_GRP1 = '02'
+                        --AND D.LINE_GRP2 = '0002'
+                    LEFT OUTER JOIN MST_QIP_DEFECT AS E WITH (NOLOCK)
+                        ON A.DFT_CATG = E.DFT_CATG
+                        AND A.DFT_CD = E.DFT_CD
+                        AND B.BUYER = E.BUYER
+                        AND A.FAC_CD = E.FAC_CD
+                    LEFT OUTER JOIN MST_COMM_DET AS F WITH (NOLOCK)
+                        ON F.COM_CD = 'DFT_CATG'
+                        AND A.DFT_CATG = F.COM_SEQ
+                    WHERE A.FAC_CD = '51'
+                    AND LINE_GRP5 = 'F-C'
+                    AND LINE_NM = 'C-03'
+                    --AND D.LINE_NM = ?
 
-        //             -- Filter tanggal hari ini (Format YYYYMMDD)
-        //             --AND A.PROD_DATE = CONVERT(VARCHAR(8), DATEADD(DAY, -1, GETDATE()), 112)
-        //             AND A.PROD_DATE = CONVERT(VARCHAR(8), GETDATE(), 112)
+                    -- Filter tanggal hari ini (Format YYYYMMDD)
+                    --AND A.PROD_DATE = CONVERT(VARCHAR(8), DATEADD(DAY, -1, GETDATE()), 112)
+                    AND A.PROD_DATE = CONVERT(VARCHAR(8), GETDATE(), 112)
 
-        //             AND A.CREATE_DATE >= DATEADD(HOUR, DATEDIFF(HOUR, 0, GETDATE()), 0)
-        //             AND A.CREATE_DATE <= GETDATE()
+                    AND A.CREATE_DATE >= DATEADD(HOUR, DATEDIFF(HOUR, 0, GETDATE()), 0)
+                    AND A.CREATE_DATE <= GETDATE()
 
-        //             AND E.DFT_NM IS NOT NULL
-        //         )
-        //         SELECT
-        //             GOOD_TYPE,
-        //             PROD_DATE,
-        //             LINE_GRP,
-        //             LINE_NM,
-        //             LINE_CAPA_HOUR,
-        //             ARTICLEDESC,
-        //             ARTNO,
-        //             O_NO,
-        //             DFT_CATG,
-        //             DFT_NM,
-        //             TIME_CD,
-        //             QTY,
-        //             CREATE_DATE
-        //         FROM DEFECT_DATA
-        //         ORDER BY
-        //             CREATE_DATE ASC;
-        //     ", [$cell]);
+                    AND E.DFT_NM IS NOT NULL
+                )
+                SELECT
+                    GOOD_TYPE,
+                    PROD_DATE,
+                    LINE_GRP,
+                    LINE_NM,
+                    LINE_CAPA_HOUR,
+                    ARTICLEDESC,
+                    ARTNO,
+                    O_NO,
+                    DFT_CATG,
+                    DFT_NM,
+                    TIME_CD,
+                    QTY,
+                    CREATE_DATE
+                FROM DEFECT_DATA
+                ORDER BY
+                    CREATE_DATE ASC;
+            ", [$cell]);
             // --- JSON DATA / DB QUERY ---
-        $jsonString = '[
-            {"GOOD_TYPE":"R","PROD_DATE":"20260904","LINE_GRP":"B1","LINE_NM":"B1-01","ARTICLEDESC":"M603V1_LI","ARTNO":"M6032OD-D","O_NO":"7880498 - 1","DFT_CATG":"General","DFT_NM":"Cleanliness","TIME_CD":"A007","QTY":"1.00","CREATE_DATE":"2026-09-04 07:00:00.000"},
-            {"GOOD_TYPE":"R","PROD_DATE":"20260904","LINE_GRP":"B1","LINE_NM":"B1-01","ARTICLEDESC":"M603V1_LI","ARTNO":"M6032OD-D","O_NO":"7880498 - 1","DFT_CATG":"General","DFT_NM":"Cleanliness","TIME_CD":"A007","QTY":"1.00","CREATE_DATE":"2026-09-04 07:01:00.000"},
-            {"GOOD_TYPE":"R","PROD_DATE":"20260904","LINE_GRP":"B1","LINE_NM":"B1-01","ARTICLEDESC":"M603V1_LI","ARTNO":"M6032OD-D","O_NO":"7880498 - 1","DFT_CATG":"General","DFT_NM":"Cleanliness","TIME_CD":"A007","QTY":"1.00","CREATE_DATE":"2026-09-04 07:02:00.000"},
-            {"GOOD_TYPE":"R","PROD_DATE":"20260904","LINE_GRP":"B1","LINE_NM":"B1-01","ARTICLEDESC":"M603V1_LI","ARTNO":"M6032OD-D","O_NO":"7880498 - 1","DFT_CATG":"General","DFT_NM":"Cleanliness","TIME_CD":"A007","QTY":"1.00","CREATE_DATE":"2026-09-04 07:03:00.000"},
-            {"GOOD_TYPE":"R","PROD_DATE":"20260904","LINE_GRP":"B1","LINE_NM":"B1-01","ARTICLEDESC":"M603V1_LI","ARTNO":"M6032OD-D","O_NO":"7880498 - 1","DFT_CATG":"General","DFT_NM":"Cleanliness","TIME_CD":"A007","QTY":"1.00","CREATE_DATE":"2026-09-04 07:04:00.000"},
-            {"GOOD_TYPE":"R","PROD_DATE":"20260904","LINE_GRP":"B1","LINE_NM":"B1-01","ARTICLEDESC":"M603V1_LI","ARTNO":"M6032OD-D","O_NO":"7880498 - 1","DFT_CATG":"General","DFT_NM":"Cleanliness","TIME_CD":"A007","QTY":"1.00","CREATE_DATE":"2026-09-04 07:05:00.000"},
-            {"GOOD_TYPE":"R","PROD_DATE":"20260904","LINE_GRP":"B1","LINE_NM":"B1-01","ARTICLEDESC":"M603V1_LI","ARTNO":"M6032OD-D","O_NO":"7880498 - 1","DFT_CATG":"General","DFT_NM":"Cleanliness","TIME_CD":"A007","QTY":"1.00","CREATE_DATE":"2026-09-04 07:06:00.000"},
-            {"GOOD_TYPE":"R","PROD_DATE":"20260904","LINE_GRP":"B1","LINE_NM":"B1-01","ARTICLEDESC":"M603V1_LI","ARTNO":"M6032OD-D","O_NO":"7880498 - 1","DFT_CATG":"General","DFT_NM":"Cleanliness","TIME_CD":"A007","QTY":"1.00","CREATE_DATE":"2026-09-04 07:07:00.000"},
-            {"GOOD_TYPE":"R","PROD_DATE":"20260904","LINE_GRP":"B1","LINE_NM":"B1-01","ARTICLEDESC":"M603V1_LI","ARTNO":"M6032OD-D","O_NO":"7880498 - 1","DFT_CATG":"General","DFT_NM":"Cleanliness","TIME_CD":"A007","QTY":"1.00","CREATE_DATE":"2026-09-04 07:08:00.000"},
-            {"GOOD_TYPE":"R","PROD_DATE":"20260904","LINE_GRP":"B1","LINE_NM":"B1-01","ARTICLEDESC":"M603V1_LI","ARTNO":"M6032OD-D","O_NO":"7880498 - 1","DFT_CATG":"Sewing","DFT_NM":"Stitching","TIME_CD":"A007","QTY":"1.00","CREATE_DATE":"2026-09-04 07:09:00.000"},
-            {"GOOD_TYPE":"R","PROD_DATE":"20260904","LINE_GRP":"B1","LINE_NM":"B1-01","ARTICLEDESC":"M603V1_LI","ARTNO":"M6032OD-D","O_NO":"7880498 - 1","DFT_CATG":"Sewing","DFT_NM":"Stitching","TIME_CD":"A007","QTY":"1.00","CREATE_DATE":"2026-09-04 07:10:00.000"},
-            {"GOOD_TYPE":"R","PROD_DATE":"20260904","LINE_GRP":"B1","LINE_NM":"B1-01","ARTICLEDESC":"M603V1_LI","ARTNO":"M6032OD-D","O_NO":"7880498 - 1","DFT_CATG":"Sewing","DFT_NM":"Stitching","TIME_CD":"A007","QTY":"1.00","CREATE_DATE":"2026-09-04 07:11:00.000"},
-            {"GOOD_TYPE":"R","PROD_DATE":"20260904","LINE_GRP":"B1","LINE_NM":"B1-01","ARTICLEDESC":"M603V1_LI","ARTNO":"M6032OD-D","O_NO":"7880498 - 1","DFT_CATG":"Sewing","DFT_NM":"Stitching","TIME_CD":"A007","QTY":"1.00","CREATE_DATE":"2026-09-04 07:12:00.000"},
-            {"GOOD_TYPE":"R","PROD_DATE":"20260904","LINE_GRP":"B1","LINE_NM":"B1-01","ARTICLEDESC":"M603V1_LI","ARTNO":"M6032OD-D","O_NO":"7880498 - 1","DFT_CATG":"Sewing","DFT_NM":"Stitching","TIME_CD":"A007","QTY":"1.00","CREATE_DATE":"2026-09-04 07:13:00.000"},
-            {"GOOD_TYPE":"R","PROD_DATE":"20260904","LINE_GRP":"B1","LINE_NM":"B1-01","ARTICLEDESC":"M603V1_LI","ARTNO":"M6032OD-D","O_NO":"7880498 - 1","DFT_CATG":"General","DFT_NM":"Cleanliness","TIME_CD":"A007","QTY":"1.00","CREATE_DATE":"2026-09-04 07:14:00.000"},
-            {"GOOD_TYPE":"R","PROD_DATE":"20260904","LINE_GRP":"B1","LINE_NM":"B1-01","ARTICLEDESC":"M603V1_LI","ARTNO":"M6032OD-D","O_NO":"7880498 - 1","DFT_CATG":"General","DFT_NM":"Cleanliness","TIME_CD":"A007","QTY":"1.00","CREATE_DATE":"2026-09-04 07:15:00.000"},
-            {"GOOD_TYPE":"R","PROD_DATE":"20260904","LINE_GRP":"B1","LINE_NM":"B1-01","ARTICLEDESC":"M603V1_LI","ARTNO":"M6032OD-D","O_NO":"7880498 - 1","DFT_CATG":"General","DFT_NM":"Cleanliness","TIME_CD":"A007","QTY":"1.00","CREATE_DATE":"2026-09-04 07:16:00.000"}
-        ]';
+        // $jsonString = '[
+        //     {"GOOD_TYPE":"R","PROD_DATE":"20260904","LINE_GRP":"B1","LINE_NM":"B1-01","ARTICLEDESC":"M603V1_LI","ARTNO":"M6032OD-D","O_NO":"7880498 - 1","DFT_CATG":"General","DFT_NM":"Cleanliness","TIME_CD":"A007","QTY":"1.00","CREATE_DATE":"2026-09-04 07:00:00.000"},
+        //     {"GOOD_TYPE":"R","PROD_DATE":"20260904","LINE_GRP":"B1","LINE_NM":"B1-01","ARTICLEDESC":"M603V1_LI","ARTNO":"M6032OD-D","O_NO":"7880498 - 1","DFT_CATG":"General","DFT_NM":"Cleanliness","TIME_CD":"A007","QTY":"1.00","CREATE_DATE":"2026-09-04 07:01:00.000"},
+        //     {"GOOD_TYPE":"R","PROD_DATE":"20260904","LINE_GRP":"B1","LINE_NM":"B1-01","ARTICLEDESC":"M603V1_LI","ARTNO":"M6032OD-D","O_NO":"7880498 - 1","DFT_CATG":"General","DFT_NM":"Cleanliness","TIME_CD":"A007","QTY":"1.00","CREATE_DATE":"2026-09-04 07:02:00.000"},
+        //     {"GOOD_TYPE":"R","PROD_DATE":"20260904","LINE_GRP":"B1","LINE_NM":"B1-01","ARTICLEDESC":"M603V1_LI","ARTNO":"M6032OD-D","O_NO":"7880498 - 1","DFT_CATG":"General","DFT_NM":"Cleanliness","TIME_CD":"A007","QTY":"1.00","CREATE_DATE":"2026-09-04 07:03:00.000"},
+        //     {"GOOD_TYPE":"R","PROD_DATE":"20260904","LINE_GRP":"B1","LINE_NM":"B1-01","ARTICLEDESC":"M603V1_LI","ARTNO":"M6032OD-D","O_NO":"7880498 - 1","DFT_CATG":"General","DFT_NM":"Cleanliness","TIME_CD":"A007","QTY":"1.00","CREATE_DATE":"2026-09-04 07:04:00.000"},
+        //     {"GOOD_TYPE":"R","PROD_DATE":"20260904","LINE_GRP":"B1","LINE_NM":"B1-01","ARTICLEDESC":"M603V1_LI","ARTNO":"M6032OD-D","O_NO":"7880498 - 1","DFT_CATG":"General","DFT_NM":"Cleanliness","TIME_CD":"A007","QTY":"1.00","CREATE_DATE":"2026-09-04 07:05:00.000"},
+        //     {"GOOD_TYPE":"R","PROD_DATE":"20260904","LINE_GRP":"B1","LINE_NM":"B1-01","ARTICLEDESC":"M603V1_LI","ARTNO":"M6032OD-D","O_NO":"7880498 - 1","DFT_CATG":"General","DFT_NM":"Cleanliness","TIME_CD":"A007","QTY":"1.00","CREATE_DATE":"2026-09-04 07:06:00.000"},
+        //     {"GOOD_TYPE":"R","PROD_DATE":"20260904","LINE_GRP":"B1","LINE_NM":"B1-01","ARTICLEDESC":"M603V1_LI","ARTNO":"M6032OD-D","O_NO":"7880498 - 1","DFT_CATG":"General","DFT_NM":"Cleanliness","TIME_CD":"A007","QTY":"1.00","CREATE_DATE":"2026-09-04 07:07:00.000"},
+        //     {"GOOD_TYPE":"R","PROD_DATE":"20260904","LINE_GRP":"B1","LINE_NM":"B1-01","ARTICLEDESC":"M603V1_LI","ARTNO":"M6032OD-D","O_NO":"7880498 - 1","DFT_CATG":"General","DFT_NM":"Cleanliness","TIME_CD":"A007","QTY":"1.00","CREATE_DATE":"2026-09-04 07:08:00.000"},
+        //     {"GOOD_TYPE":"R","PROD_DATE":"20260904","LINE_GRP":"B1","LINE_NM":"B1-01","ARTICLEDESC":"M603V1_LI","ARTNO":"M6032OD-D","O_NO":"7880498 - 1","DFT_CATG":"Sewing","DFT_NM":"Stitching","TIME_CD":"A007","QTY":"1.00","CREATE_DATE":"2026-09-04 07:09:00.000"},
+        //     {"GOOD_TYPE":"R","PROD_DATE":"20260904","LINE_GRP":"B1","LINE_NM":"B1-01","ARTICLEDESC":"M603V1_LI","ARTNO":"M6032OD-D","O_NO":"7880498 - 1","DFT_CATG":"Sewing","DFT_NM":"Stitching","TIME_CD":"A007","QTY":"1.00","CREATE_DATE":"2026-09-04 07:10:00.000"},
+        //     {"GOOD_TYPE":"R","PROD_DATE":"20260904","LINE_GRP":"B1","LINE_NM":"B1-01","ARTICLEDESC":"M603V1_LI","ARTNO":"M6032OD-D","O_NO":"7880498 - 1","DFT_CATG":"Sewing","DFT_NM":"Stitching","TIME_CD":"A007","QTY":"1.00","CREATE_DATE":"2026-09-04 07:11:00.000"},
+        //     {"GOOD_TYPE":"R","PROD_DATE":"20260904","LINE_GRP":"B1","LINE_NM":"B1-01","ARTICLEDESC":"M603V1_LI","ARTNO":"M6032OD-D","O_NO":"7880498 - 1","DFT_CATG":"Sewing","DFT_NM":"Stitching","TIME_CD":"A007","QTY":"1.00","CREATE_DATE":"2026-09-04 07:12:00.000"},
+        //     {"GOOD_TYPE":"R","PROD_DATE":"20260904","LINE_GRP":"B1","LINE_NM":"B1-01","ARTICLEDESC":"M603V1_LI","ARTNO":"M6032OD-D","O_NO":"7880498 - 1","DFT_CATG":"Sewing","DFT_NM":"Stitching","TIME_CD":"A007","QTY":"1.00","CREATE_DATE":"2026-09-04 07:13:00.000"},
+        //     {"GOOD_TYPE":"R","PROD_DATE":"20260904","LINE_GRP":"B1","LINE_NM":"B1-01","ARTICLEDESC":"M603V1_LI","ARTNO":"M6032OD-D","O_NO":"7880498 - 1","DFT_CATG":"General","DFT_NM":"Cleanliness","TIME_CD":"A007","QTY":"1.00","CREATE_DATE":"2026-09-04 07:14:00.000"},
+        //     {"GOOD_TYPE":"R","PROD_DATE":"20260904","LINE_GRP":"B1","LINE_NM":"B1-01","ARTICLEDESC":"M603V1_LI","ARTNO":"M6032OD-D","O_NO":"7880498 - 1","DFT_CATG":"General","DFT_NM":"Cleanliness","TIME_CD":"A007","QTY":"1.00","CREATE_DATE":"2026-09-04 07:15:00.000"},
+        //     {"GOOD_TYPE":"R","PROD_DATE":"20260904","LINE_GRP":"B1","LINE_NM":"B1-01","ARTICLEDESC":"M603V1_LI","ARTNO":"M6032OD-D","O_NO":"7880498 - 1","DFT_CATG":"General","DFT_NM":"Cleanliness","TIME_CD":"A007","QTY":"1.00","CREATE_DATE":"2026-09-04 07:16:00.000"}
+        // ]';
 
-        $data = json_decode($jsonString);
+        // $data = json_decode($jsonString);
         if (!$data) {
             return [
                 'alert'  => 'false',
